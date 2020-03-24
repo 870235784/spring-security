@@ -1,5 +1,8 @@
 package com.tca.security.core.config;
 
+import com.tca.security.core.properties.SecurityProperties;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,17 +19,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
+@Slf4j
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
-    /**
-     * 用户名
-     */
-    private static final String USERNAME = "admin";
-
-    /**
-     * 密码
-     */
-    private static final String PASSWORD = "123456";
+    @Autowired
+    private SecurityProperties securityProperties;
 
     /**
      * 加密器
@@ -46,9 +43,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        log.info("配置 : {}", securityProperties);
         auth.inMemoryAuthentication()
-                .withUser(USERNAME)
-                .password(passwordEncoder().encode(PASSWORD))
+                .withUser(securityProperties.getAuthentication().getUsername())
+                .password(passwordEncoder().encode(securityProperties.getAuthentication().getPassword()))
                 .authorities("ADMIN");
     }
 
@@ -66,13 +64,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
 //        http.httpBasic() // httpbasic方式认证
         http.formLogin()  // http表单登录
-            .loginPage("/login/page") // 默认登录页面, 请求 /login/page
-            .loginProcessingUrl("/login/form") // 登录表单提交处理Url, 默认是 /login
-            .usernameParameter("username") // 用户名-请求参数
-            .passwordParameter("password") // 密码-请求参数
+            .loginPage(securityProperties.getAuthentication().getLoginPage()) // 默认登录页面, 请求 /login/page
+            .loginProcessingUrl(securityProperties.getAuthentication().getLoginProcessingUrl()) // 登录表单提交处理Url, 默认是 /login
+            .usernameParameter(securityProperties.getAuthentication().getUsernameParameter()) // 用户名-请求参数
+            .passwordParameter(securityProperties.getAuthentication().getPasswordParameter()) // 密码-请求参数
             .and()
             .authorizeRequests() // 认证请求
-            .antMatchers("/login/page").permitAll() // 拦截放行 /login/page 请求
+            .antMatchers(securityProperties.getAuthentication().getLoginPage()).permitAll() // 拦截放行 /login/page 请求
             .anyRequest() // 所有通过http访问的请求都需要认证
             .authenticated()
         ;
@@ -84,6 +82,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
      */
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring().antMatchers("/dist/**", "/modules/**", "/plugins/**");
+        web.ignoring().antMatchers(securityProperties.getAuthentication().getStaticPaths());
     }
 }
