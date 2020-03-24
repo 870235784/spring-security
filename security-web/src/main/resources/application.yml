@@ -1,0 +1,7 @@
+server:
+  port: 80
+
+# 模板页面缓存
+spring:
+  thymeleaf:
+    cache: false
