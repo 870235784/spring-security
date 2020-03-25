@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
@@ -29,6 +30,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     private AuthenticationSuccessHandler customerAuthenticationSuccessHandler;
+
+    @Autowired
+    private AuthenticationFailureHandler customerAuthenticationFailureHandler;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -78,6 +82,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .usernameParameter(securityProperties.getAuthentication().getUsernameParameter()) // 用户名-请求参数
             .passwordParameter(securityProperties.getAuthentication().getPasswordParameter()) // 密码-请求参数
             .successHandler(customerAuthenticationSuccessHandler)
+            .failureHandler(customerAuthenticationFailureHandler)
             .and()
             .authorizeRequests() // 认证请求
             .antMatchers(securityProperties.getAuthentication().getLoginPage()).permitAll() // 拦截放行 /login/page 请求

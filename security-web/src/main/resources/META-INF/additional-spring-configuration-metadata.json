@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "tca.security.authentication.usernameParameter",
+      "type": "java.lang.String",
+      "description": "Description for tca.security.authentication.usernameParameter."
+  }
+] }

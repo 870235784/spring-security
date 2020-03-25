@@ -1,5 +1,6 @@
 package com.tca.security.core.properties;
 
+import com.tca.security.core.enums.LoginResponseType;
 import lombok.Data;
 import lombok.ToString;
 import org.springframework.stereotype.Component;
@@ -47,5 +48,10 @@ public class AuthenticationProperties {
      * 默认密码
      */
     private String password = "123456";
+
+    /**
+     * 默认登录响应方式
+     */
+    private String loginResponseType = LoginResponseType.JSON.name();
 
 }

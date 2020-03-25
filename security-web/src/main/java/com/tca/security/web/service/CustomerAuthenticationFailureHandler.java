@@ -7,8 +7,8 @@ import com.tca.security.core.enums.LoginResponseType;
 import com.tca.security.core.properties.SecurityProperties;
 import com.tca.utils.WebBaseUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.ServletException;
@@ -17,38 +17,38 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * 认证成功处理器
+ * 认证失败处理器
  * @author zhoua
  * @Date 2020/3/25
  */
-@Service("customerAuthenticationSuccessHandler")
-//public class CustomerAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
-public class CustomerAuthenticationSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler{
+@Service("customerAuthenticationFailureHandler")
+//public class CustomerAuthenticationFailureHandler implements AuthenticationFailureHandler {
+public class CustomerAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
     private SecurityProperties securityProperties;
 
     /**
-     * 认证成功的处理
+     * 认证失败的处理
      * @param request
      * @param response
-     * @param authentication
+     * @param exception
      * @throws IOException
      * @throws ServletException
      */
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String loginResponseType = securityProperties.getAuthentication().getLoginResponseType();
-        // 使用json方式
+        // 如果使用json的方式
         if (LoginResponseType.JSON.name().equals(loginResponseType)) {
             ReturnBaseMessageBean returnBaseMessageBean = new ReturnBaseMessageBean();
-            WebBaseUtils.setReturnBaseMessage(returnBaseMessageBean, ErrorCode.S0000);
+            WebBaseUtils.setReturnBaseMessage(returnBaseMessageBean, ErrorCode.B5004);
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JSONObject.toJSONString(returnBaseMessageBean));
         } else if (LoginResponseType.REDIRECT.name().equals(loginResponseType)) {
             // 使用重定向的方式
-            super.onAuthenticationSuccess(request, response, authentication);
+            super.setDefaultFailureUrl(securityProperties.getAuthentication().getLoginPage() + "?error");
+            super.onAuthenticationFailure(request, response, exception);
         }
 
     }
