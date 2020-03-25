@@ -10,8 +10,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 /**
  * @author zhoua
@@ -21,6 +23,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @Slf4j
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
+
+    @Autowired
+    private UserDetailsService customerUserDetailService;
+
+    @Autowired
+    private AuthenticationSuccessHandler customerAuthenticationSuccessHandler;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -43,11 +51,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
      */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        log.info("配置 : {}", securityProperties);
-        auth.inMemoryAuthentication()
+        // 用户名密码内存存储方式
+        /*auth.inMemoryAuthentication()
                 .withUser(securityProperties.getAuthentication().getUsername())
                 .password(passwordEncoder().encode(securityProperties.getAuthentication().getPassword()))
-                .authorities("ADMIN");
+                .authorities("ADMIN");*/
+        auth.userDetailsService(customerUserDetailService);
     }
 
     /**
@@ -68,6 +77,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .loginProcessingUrl(securityProperties.getAuthentication().getLoginProcessingUrl()) // 登录表单提交处理Url, 默认是 /login
             .usernameParameter(securityProperties.getAuthentication().getUsernameParameter()) // 用户名-请求参数
             .passwordParameter(securityProperties.getAuthentication().getPasswordParameter()) // 密码-请求参数
+            .successHandler(customerAuthenticationSuccessHandler)
             .and()
             .authorizeRequests() // 认证请求
             .antMatchers(securityProperties.getAuthentication().getLoginPage()).permitAll() // 拦截放行 /login/page 请求

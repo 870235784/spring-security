@@ -35,6 +35,11 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+        <dependency>
+            <groupId>tca</groupId>
+            <artifactId>utils</artifactId>
+            <version>1.0.0-RELEASE</version>
+        </dependency>
     </dependencies>
 
 
