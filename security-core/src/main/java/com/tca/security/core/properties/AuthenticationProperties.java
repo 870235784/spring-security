@@ -54,4 +54,9 @@ public class AuthenticationProperties {
      */
     private String loginResponseType = LoginResponseType.JSON.name();
 
+    /**
+     * 不需要校验的url
+     */
+    private String[] ignoreUrls;
+
 }

@@ -38,12 +38,12 @@
             <optional>true</optional>
         </dependency>
 
-        <!--图形验证码
+        <!--图形验证码-->
         <dependency>
             <groupId>com.github.penggle</groupId>
             <artifactId>kaptcha</artifactId>
         </dependency>
-		-->
+
         <!--数据库依赖
         <dependency>
             <groupId>org.springframework.boot</groupId>

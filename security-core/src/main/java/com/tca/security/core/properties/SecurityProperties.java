@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author zhoua
  * @Date 2020/3/24
+ * 读取 application.yml 文件, 将tca.security.authentication的属性注入到bean
  */
 @Component
 @ConfigurationProperties(prefix = "tca.security")

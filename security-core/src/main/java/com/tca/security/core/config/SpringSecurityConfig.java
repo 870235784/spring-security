@@ -1,5 +1,6 @@
 package com.tca.security.core.config;
 
+import com.tca.security.core.filter.ImageCodeValidateFilter;
 import com.tca.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +16,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * @author zhoua
  * @Date 2020/3/22
+ * spring-security 核心配置
  */
 @Configuration
 @EnableWebSecurity
@@ -33,6 +36,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
 
     @Autowired
     private AuthenticationFailureHandler customerAuthenticationFailureHandler;
+
+    @Autowired
+    private ImageCodeValidateFilter imageCodeValidateFilter;
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -76,7 +82,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        http.httpBasic() // httpbasic方式认证
-        http.formLogin()  // http表单登录
+        http
+            .addFilterBefore(imageCodeValidateFilter, UsernamePasswordAuthenticationFilter.class)
+            .formLogin()  // http表单登录
             .loginPage(securityProperties.getAuthentication().getLoginPage()) // 默认登录页面, 请求 /login/page
             .loginProcessingUrl(securityProperties.getAuthentication().getLoginProcessingUrl()) // 登录表单提交处理Url, 默认是 /login
             .usernameParameter(securityProperties.getAuthentication().getUsernameParameter()) // 用户名-请求参数
@@ -85,7 +93,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .failureHandler(customerAuthenticationFailureHandler)
             .and()
             .authorizeRequests() // 认证请求
-            .antMatchers(securityProperties.getAuthentication().getLoginPage()).permitAll() // 拦截放行 /login/page 请求
+            .antMatchers(securityProperties.getAuthentication().getIgnoreUrls()).permitAll() // 拦截放行 url
             .anyRequest() // 所有通过http访问的请求都需要认证
             .authenticated()
         ;

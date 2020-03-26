@@ -1,3 +1,4 @@
+<!-- suppress ALL -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
@@ -49,15 +50,14 @@
           </div>
         </div>
 
-        // TODO 验证码
-       <!-- <div class="row mb-2 ">
+        <div class="row mb-2 ">
           <div class="col-6">
               <input name="code" type="text" class="form-control" placeholder="验证码">
           </div>
           <div class="col-6">
             <img onclick="this.src='/code/image?'+Math.random()" src="/code/image" alt="验证码"   />
           </div>
-        </div>-->
+        </div>
 
         <div th:if="${param.error}">
             <span th:text="${session.SPRING_SECURITY_LAST_EXCEPTION?.message}" style="color:red">用户名或密码错误</span>
