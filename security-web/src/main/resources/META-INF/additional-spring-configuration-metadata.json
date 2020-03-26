@@ -4,5 +4,35 @@
       "name": "tca.security.authentication.usernameParameter",
       "type": "java.lang.String",
       "description": "Description for tca.security.authentication.usernameParameter."
-  }
-] }
+    },
+    {
+      "name": "tca.security.authentication.loginPage",
+      "type": "java.lang.String",
+      "description": "Description for tca.security.authentication.loginPage."
+    },
+    {
+      "name": "tca.security.authentication.loginProcessingUrl",
+      "type": "java.lang.String",
+      "description": "Description for tca.security.authentication.loginProcessingUrl."
+    },
+    {
+      "name": "tca.security.authentication.passwordParameter",
+      "type": "java.lang.String",
+      "description": "Description for tca.security.authentication.passwordParameter."
+    },
+    {
+      "name": "tca.security.authentication.username",
+      "type": "java.lang.String",
+      "description": "Description for tca.security.authentication.username."
+    },
+    {
+      "name": "tca.security.authentication.password",
+      "type": "java.lang.String",
+      "description": "Description for tca.security.authentication.password."
+    },
+    {
+      "name": "tca.security.authentication.loginResponseType",
+      "type": "java.lang.String",
+      "description": "Description for tca.security.authentication.loginResponseType."
+    }
+  ] }

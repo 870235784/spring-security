@@ -17,6 +17,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+
+import javax.sql.DataSource;
 
 /**
  * @author zhoua
@@ -43,6 +46,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     @Autowired
     private SecurityProperties securityProperties;
 
+    @Autowired
+    private DataSource dataSource;
+
     /**
      * 加密器
      * @return
@@ -50,6 +56,19 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * 实现remember me功能
+     * @return
+     */
+    @Bean
+    public JdbcTokenRepositoryImpl jdbcTokenRepository() {
+        JdbcTokenRepositoryImpl jdbcTokenRepository = new JdbcTokenRepositoryImpl();
+        // 项目启动时创建数据库表
+//        jdbcTokenRepository.setCreateTableOnStartup(true);
+        jdbcTokenRepository.setDataSource(dataSource);
+        return jdbcTokenRepository;
     }
 
     /**
@@ -96,6 +115,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .antMatchers(securityProperties.getAuthentication().getIgnoreUrls()).permitAll() // 拦截放行 url
             .anyRequest() // 所有通过http访问的请求都需要认证
             .authenticated()
+            .and()
+            .rememberMe() // 记住我
+            .tokenRepository(jdbcTokenRepository())
+            .tokenValiditySeconds(60 * 60 * 24 * 7)
         ;
     }
 
@@ -107,4 +130,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     public void configure(WebSecurity web) {
         web.ignoring().antMatchers(securityProperties.getAuthentication().getStaticPaths());
     }
+
+
 }
