@@ -30,3 +30,6 @@ tca:
       ignoreUrls:
         - /login/page
         - /code/image
+        - /mobile/page
+        - /code/mobile
+        - /mobile/form

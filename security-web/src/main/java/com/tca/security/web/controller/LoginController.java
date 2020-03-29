@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @Date 2020/3/20
  */
 @Controller
-public class DispatcherController {
+public class LoginController {
 
     /**
      * 跳转到 resource/templates/index.html

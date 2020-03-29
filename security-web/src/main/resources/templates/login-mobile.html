@@ -116,7 +116,7 @@
         }
         var url = $(this).attr("code_url") + mobile;
         $.get(url, function(data){
-            alert(data.code === 200 ? "发送成功": "发送失败");
+            alert(data.returnCode === "0000" ? "发送成功": "发送失败");
         });
     });
 

@@ -1,6 +1,8 @@
 package com.tca.security.core.config;
 
-import com.tca.security.core.filter.ImageCodeValidateFilter;
+import com.tca.security.core.imageCode.ImageCodeValidateFilter;
+import com.tca.security.core.mobile.MobileAuthenticationConfig;
+import com.tca.security.core.mobile.MobileCodeValidateFilter;
 import com.tca.security.core.properties.SecurityProperties;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     private ImageCodeValidateFilter imageCodeValidateFilter;
 
     @Autowired
+    private MobileCodeValidateFilter mobileCodeValidateFilter;
+
+    @Autowired
     private SecurityProperties securityProperties;
+
+    @Autowired
+    private MobileAuthenticationConfig mobileAuthenticationConfig;
 
     @Autowired
     private DataSource dataSource;
@@ -102,6 +110,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
 //        http.httpBasic() // httpbasic方式认证
         http
+            .addFilterBefore(mobileCodeValidateFilter, UsernamePasswordAuthenticationFilter.class)
             .addFilterBefore(imageCodeValidateFilter, UsernamePasswordAuthenticationFilter.class)
             .formLogin()  // http表单登录
             .loginPage(securityProperties.getAuthentication().getLoginPage()) // 默认登录页面, 请求 /login/page
@@ -120,6 +129,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .tokenRepository(jdbcTokenRepository())
             .tokenValiditySeconds(60 * 60 * 24 * 7)
         ;
+
+        http.apply(mobileAuthenticationConfig);
     }
 
     /**

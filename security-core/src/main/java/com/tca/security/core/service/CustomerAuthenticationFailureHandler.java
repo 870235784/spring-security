@@ -1,4 +1,4 @@
-package com.tca.security.web.service;
+package com.tca.security.core.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tca.beans.ErrorCode;
@@ -6,6 +6,7 @@ import com.tca.beans.ReturnBaseMessageBean;
 import com.tca.security.core.enums.LoginResponseType;
 import com.tca.security.core.properties.SecurityProperties;
 import com.tca.utils.WebBaseUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
@@ -47,7 +48,9 @@ public class CustomerAuthenticationFailureHandler extends SimpleUrlAuthenticatio
             response.getWriter().write(JSONObject.toJSONString(returnBaseMessageBean));
         } else if (LoginResponseType.REDIRECT.name().equals(loginResponseType)) {
             // 使用重定向的方式
-            super.setDefaultFailureUrl(securityProperties.getAuthentication().getLoginPage() + "?error");
+//            super.setDefaultFailureUrl(securityProperties.getAuthentication().getLoginPage() + "?error");
+            String lastUrl = StringUtils.substringBeforeLast(request.getHeader("referer"), "?");
+            super.setDefaultFailureUrl(lastUrl + "?error");
             super.onAuthenticationFailure(request, response, exception);
         }
 

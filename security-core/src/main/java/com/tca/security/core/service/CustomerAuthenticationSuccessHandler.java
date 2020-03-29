@@ -1,4 +1,4 @@
-package com.tca.security.web.service;
+package com.tca.security.core.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.tca.beans.ErrorCode;

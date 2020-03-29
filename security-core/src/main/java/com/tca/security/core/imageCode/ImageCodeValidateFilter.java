@@ -1,4 +1,4 @@
-package com.tca.security.core.filter;
+package com.tca.security.core.imageCode;
 
 import com.tca.security.core.constant.SecurityConstants;
 import com.tca.security.core.exception.ImageCodeException;

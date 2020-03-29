@@ -1,4 +1,4 @@
-package com.tca.security.web.service;
+package com.tca.security.core.service;
 
 import com.tca.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
