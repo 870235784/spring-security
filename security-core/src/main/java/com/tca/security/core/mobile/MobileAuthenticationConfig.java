@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.DefaultSecurityFilterChain;
+import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.stereotype.Component;
 
@@ -25,7 +25,7 @@ public class MobileAuthenticationConfig extends SecurityConfigurerAdapter<Defaul
     private CustomerAuthenticationFailureHandler customerAuthenticationFailureHandler;
 
     @Autowired
-    private UserDetailsService mobileUserDetailService;
+    private MobileUserDetailService mobileUserDetailService;
 
     // 不能采用这种方式, 否则会报错
     /*@Autowired
@@ -37,9 +37,11 @@ public class MobileAuthenticationConfig extends SecurityConfigurerAdapter<Defaul
     @Override
     public void configure(HttpSecurity http) throws Exception {
         MobileAuthenticationFilter mobileAuthenticationFilter = new MobileAuthenticationFilter();
-        // 1.接收 AuthenticationManager 认证管理器
+        // 1.接收 AuthenticationManager 认证管理器, RememberMeServices
         mobileAuthenticationFilter.setAuthenticationManager(
                 http.getSharedObject(AuthenticationManager.class));
+        mobileAuthenticationFilter.setRememberMeServices(
+                http.getSharedObject(RememberMeServices.class));
         // 2.采用哪个成功、失败处理器
         mobileAuthenticationFilter.setAuthenticationSuccessHandler(
                 customerAuthenticationSuccessHandler);
