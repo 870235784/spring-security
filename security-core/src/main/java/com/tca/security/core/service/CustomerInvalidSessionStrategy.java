@@ -25,9 +25,9 @@ public class CustomerInvalidSessionStrategy implements InvalidSessionStrategy {
     // 将浏览器的sessionid清除，不关闭浏览器cookie不会被删除，一直请求都提示：Session失效
         cancelCookie(request,response);
         ReturnBaseMessageBean result = new ReturnBaseMessageBean();
-        WebBaseUtils.setReturnBaseMessage(request, ErrorCode.B5002);
+        WebBaseUtils.setReturnBaseMessage(result, ErrorCode.B5002);
         response.setContentType("application/json;charset=utf-8");
-        response.getWriter().write(JSONObject.toJSONString(request));
+        response.getWriter().write(JSONObject.toJSONString(result));
     }
 
     protected void cancelCookie(HttpServletRequest request, HttpServletResponse response) {
