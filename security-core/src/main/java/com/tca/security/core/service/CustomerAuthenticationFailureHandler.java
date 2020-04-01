@@ -43,13 +43,19 @@ public class CustomerAuthenticationFailureHandler extends SimpleUrlAuthenticatio
         // 如果使用json的方式
         if (LoginResponseType.JSON.name().equals(loginResponseType)) {
             ReturnBaseMessageBean returnBaseMessageBean = new ReturnBaseMessageBean();
-            WebBaseUtils.setReturnBaseMessage(returnBaseMessageBean, ErrorCode.B5004);
+            if (request.getAttribute("toAuthentication") != null) {
+                WebBaseUtils.setReturnBaseMessage(returnBaseMessageBean, ErrorCode.B5006);
+            } else {
+                WebBaseUtils.setReturnBaseMessage(returnBaseMessageBean, ErrorCode.B5004);
+            }
             response.setContentType("application/json;charset=UTF-8");
             response.getWriter().write(JSONObject.toJSONString(returnBaseMessageBean));
         } else if (LoginResponseType.REDIRECT.name().equals(loginResponseType)) {
             // 使用重定向的方式
 //            super.setDefaultFailureUrl(securityProperties.getAuthentication().getLoginPage() + "?error");
-            String lastUrl = StringUtils.substringBeforeLast(request.getHeader("referer"), "?");
+            String lastUrl = request.getAttribute("toAuthentication") == null?
+                StringUtils.substringBeforeLast(request.getHeader("referer"), "?"): securityProperties
+                    .getAuthentication().getLoginPage();
             super.setDefaultFailureUrl(lastUrl + "?error");
             super.onAuthenticationFailure(request, response, exception);
         }

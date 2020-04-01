@@ -23,9 +23,9 @@ public class CustomerInvalidSessionStrategy implements InvalidSessionStrategy {
     public void onInvalidSessionDetected(HttpServletRequest request,
                                          HttpServletResponse response) throws IOException {
     // 将浏览器的sessionid清除，不关闭浏览器cookie不会被删除，一直请求都提示：Session失效
-        cancelCookie(request,response);
+        cancelCookie(request, response);
         ReturnBaseMessageBean result = new ReturnBaseMessageBean();
-        WebBaseUtils.setReturnBaseMessage(result, ErrorCode.B5002);
+        WebBaseUtils.setReturnBaseMessage(result, ErrorCode.B5005);
         response.setContentType("application/json;charset=utf-8");
         response.getWriter().write(JSONObject.toJSONString(result));
     }
@@ -36,6 +36,7 @@ public class CustomerInvalidSessionStrategy implements InvalidSessionStrategy {
         cookie.setPath(getCookiePath(request));
         response.addCookie(cookie);
     }
+
     private String getCookiePath(HttpServletRequest request) {
         String contextPath = request.getContextPath();
         return contextPath.length() > 0 ? contextPath : "/";

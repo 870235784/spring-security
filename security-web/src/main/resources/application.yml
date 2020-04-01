@@ -2,7 +2,7 @@ server:
   port: 80
   servlet:
     session:
-      timeout: 1m
+      timeout: 30m
 
 # 模板页面缓存
 spring:
@@ -29,6 +29,7 @@ tca:
         - /plugins/**
       username: admin
       password: 123456
+#      loginResponseType: JSON
       loginResponseType: REDIRECT
       ignoreUrls:
         - /login/page
