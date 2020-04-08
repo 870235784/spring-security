@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.DefaultSecurityFilterChain;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.session.SessionAuthenticationStrategy;
 import org.springframework.stereotype.Component;
 
 /**
@@ -42,6 +43,9 @@ public class MobileAuthenticationConfig extends SecurityConfigurerAdapter<Defaul
                 http.getSharedObject(AuthenticationManager.class));
         mobileAuthenticationFilter.setRememberMeServices(
                 http.getSharedObject(RememberMeServices.class));
+        // session管理器, 防止手机号用户名多种方式同时登录
+        mobileAuthenticationFilter.setSessionAuthenticationStrategy(
+                http.getSharedObject(SessionAuthenticationStrategy.class));
         // 2.采用哪个成功、失败处理器
         mobileAuthenticationFilter.setAuthenticationSuccessHandler(
                 customerAuthenticationSuccessHandler);

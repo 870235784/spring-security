@@ -3,6 +3,8 @@ server:
   servlet:
     session:
       timeout: 30m
+      cookie:
+        name: JSESSIONID
 
 # 模板页面缓存
 spring:
@@ -15,6 +17,11 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/spring-security?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
     #mysql8版本以上驱动包指定新的驱动类
     driver-class-name: com.mysql.cj.jdbc.Driver
+  session:
+    store-type: redis
+  redis:
+    host: localhost
+    port: 6379
 
 tca:
   security:

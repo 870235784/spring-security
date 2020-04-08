@@ -141,8 +141,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .invalidSessionStrategy(invalidSessionStrategy) // session失效策略
             .maximumSessions(1) // 同一用户session最大数
             .expiredSessionStrategy(sessionInformationExpiredStrategy)
+//            .maxSessionsPreventsLogin(true) // 达到session最大数时阻止新增新的session
         ;
-
+        http.csrf().disable(); // 关闭csrf攻击防护
         http.apply(mobileAuthenticationConfig);
     }
 

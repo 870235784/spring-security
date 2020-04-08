@@ -24,6 +24,7 @@
            <groupId>org.springframework.boot</groupId>
            <artifactId>spring-boot-starter-security</artifactId>
        </dependency>
+
        <!-- spring security 依赖的servlet -->
        <dependency>
            <groupId>javax.servlet</groupId>
@@ -55,15 +56,22 @@
         </dependency>
 
 
-        <!--采用redis来管理session
+        <!-- 采用redis来管理session -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <groupId>tca</groupId>
+            <artifactId>cache</artifactId>
+            <version>1.0.0-RELEASE</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.session</groupId>
             <artifactId>spring-session-data-redis</artifactId>
         </dependency>
+        <!--采用redis来管理session
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
+
         -->
 
         <!--解决找不到 javax.annotation.meta.When.MAYBE

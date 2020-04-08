@@ -2,6 +2,7 @@ package com.tca.security.web.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.tca.security.core.constant.SecurityConstants;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import java.io.IOException;
  * 验证码
  */
 @Controller
+@Slf4j
 public class CodeImageController {
 
     @Autowired
@@ -28,6 +30,7 @@ public class CodeImageController {
     public void codeImage(HttpServletRequest request, HttpServletResponse response) throws IOException {
         // 1.生成验证码
         String code = defaultKaptcha.createText();
+        log.info("生成验证码: {}", code);
         BufferedImage image = defaultKaptcha.createImage(code);
         // 2.验证码放入session
         request.getSession().setAttribute(SecurityConstants.CODE_IMAGE_SESSION_ID, code);

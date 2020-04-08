@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.tca.beans.ErrorCode;
 import com.tca.beans.ReturnBaseMessageBean;
 import com.tca.utils.WebBaseUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.web.session.InvalidSessionStrategy;
 import org.springframework.stereotype.Component;
 
@@ -19,10 +20,13 @@ import java.io.IOException;
 @Component
 public class CustomerInvalidSessionStrategy implements InvalidSessionStrategy {
 
+    @Value("${server.servlet.session.cookie.name:JSESSIONID}")
+    private String sessionCookieName;
+
     @Override
     public void onInvalidSessionDetected(HttpServletRequest request,
                                          HttpServletResponse response) throws IOException {
-    // 将浏览器的sessionid清除，不关闭浏览器cookie不会被删除，一直请求都提示：Session失效
+        // 将浏览器的sessionid清除，不关闭浏览器cookie不会被删除，一直请求都提示：Session失效
         cancelCookie(request, response);
         ReturnBaseMessageBean result = new ReturnBaseMessageBean();
         WebBaseUtils.setReturnBaseMessage(result, ErrorCode.B5005);
@@ -31,7 +35,7 @@ public class CustomerInvalidSessionStrategy implements InvalidSessionStrategy {
     }
 
     protected void cancelCookie(HttpServletRequest request, HttpServletResponse response) {
-        Cookie cookie = new Cookie("JSESSIONID", null);
+        Cookie cookie = new Cookie(sessionCookieName, null);
         cookie.setMaxAge(0);
         cookie.setPath(getCookiePath(request));
         response.addCookie(cookie);
