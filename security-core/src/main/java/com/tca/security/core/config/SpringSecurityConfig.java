@@ -4,6 +4,7 @@ import com.tca.security.core.imageCode.ImageCodeValidateFilter;
 import com.tca.security.core.mobile.MobileAuthenticationConfig;
 import com.tca.security.core.mobile.MobileCodeValidateFilter;
 import com.tca.security.core.properties.SecurityProperties;
+import com.tca.security.core.service.CustomerLogoutHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +14,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -63,6 +66,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     private SessionInformationExpiredStrategy sessionInformationExpiredStrategy;
 
     @Autowired
+    private CustomerLogoutHandler customerLogoutHandler;
+
+    @Autowired
     private DataSource dataSource;
 
     /**
@@ -72,6 +78,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /**
+     * session注册管理器
+     * @return
+     */
+    @Bean
+    public SessionRegistry sessionRegistry() {
+        return new SessionRegistryImpl();
     }
 
     /**
@@ -118,15 +133,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     protected void configure(HttpSecurity http) throws Exception {
 //        http.httpBasic() // httpbasic方式认证
         http
-            .addFilterBefore(mobileCodeValidateFilter, UsernamePasswordAuthenticationFilter.class)
-            .addFilterBefore(imageCodeValidateFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(mobileCodeValidateFilter, UsernamePasswordAuthenticationFilter.class) // 手机验证码过滤器
+            .addFilterBefore(imageCodeValidateFilter, UsernamePasswordAuthenticationFilter.class) // 图形验证码过滤器
             .formLogin()  // http表单登录
             .loginPage(securityProperties.getAuthentication().getLoginPage()) // 默认登录页面, 请求 /login/page
             .loginProcessingUrl(securityProperties.getAuthentication().getLoginProcessingUrl()) // 登录表单提交处理Url, 默认是 /login
             .usernameParameter(securityProperties.getAuthentication().getUsernameParameter()) // 用户名-请求参数
             .passwordParameter(securityProperties.getAuthentication().getPasswordParameter()) // 密码-请求参数
-            .successHandler(customerAuthenticationSuccessHandler)
-            .failureHandler(customerAuthenticationFailureHandler)
+            .successHandler(customerAuthenticationSuccessHandler) // 认证成功处理器
+            .failureHandler(customerAuthenticationFailureHandler) // 认证失败处理器
             .and()
             .authorizeRequests() // 认证请求
             .antMatchers(securityProperties.getAuthentication().getIgnoreUrls()).permitAll() // 拦截放行 url
@@ -141,7 +156,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .invalidSessionStrategy(invalidSessionStrategy) // session失效策略
             .maximumSessions(1) // 同一用户session最大数
             .expiredSessionStrategy(sessionInformationExpiredStrategy)
-//            .maxSessionsPreventsLogin(true) // 达到session最大数时阻止新增新的session
+//            .maxSessionsPreventsLogin(true) // 一般不推荐打开,达到session最大数时阻止新增新的session
+            .sessionRegistry(sessionRegistry())
+            .and().and().logout()
+            .addLogoutHandler(customerLogoutHandler)
         ;
         http.csrf().disable(); // 关闭csrf攻击防护
         http.apply(mobileAuthenticationConfig);
