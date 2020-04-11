@@ -7,15 +7,14 @@
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed">
-<!-- Site wrapper -->
+<!-- Site wrapper  -->
 <div class="wrapper">
 
   <!-- 头部区域 Navbar -->
   <th:block th:replace="fragments/main-header"/>
-  <!-- /.navbar -->
 
   <!-- 左侧区域 Main Sidebar Container -->
-  <th:block th:replace="fragments/main-sidebar(activeUrl='/user')"/>
+  <th:block th:replace="fragments/main-sidebar(activeUrl='/role')"/>
 
   <!-- 右侧主区域 Content Wrapper. Contains page content -->
   <div class="content-wrapper  text-sm">
@@ -24,12 +23,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>用户管理</h1>
+            <h1>角色管理</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">系统管理</a></li>
-              <li class="breadcrumb-item active">用户管理</li>
+              <li class="breadcrumb-item active">角色管理</li>
             </ol>
           </div>
         </div>
@@ -41,10 +40,10 @@
       <!-- card -->
       <div class="card">
         <div class="card-header">
-          <h3 class="card-title">用户列表</h3>
+          <h3 class="card-title">角色列表</h3>
           <!-- 工具栏 -->
           <div class="card-tools">
-            <button type="button" class="btn btn-primary btn-xs" th:onclick="location.href=[[@{/user/form}]]" data-toggle="tooltip" title="新增">
+            <button type="button" class="btn btn-primary btn-xs" th:onclick="location.href=[[@{/role/form}]]" data-toggle="tooltip" title="新增">
               <i class="fa fa-plus"></i>&nbsp;新增
             </button>
           </div>
@@ -55,12 +54,8 @@
           <!-- 搜索栏 -->
           <form class="form-inline search  text-sm" id="search-form">
             <div class="form-group input-group-sm">
-              <span>用户名：</span>
-              <input id="username" name="username" type="text" class="form-control" autocomplete="off">
-            </div>
-            <div class="form-group input-group-sm ml-3">
-              <span>手机号：</span>
-              <input id="mobile" name="mobile" type="text" class="form-control" autocomplete="off">
+              <span>角色名称：</span>
+              <input id="name" name="name" type="text" class="form-control" autocomplete="off">
             </div>
             <div class="form-group  ml-3">
               <a class="btn btn-outline-primary btn-sm" onclick="searchForm()" href="#">
@@ -72,14 +67,11 @@
             </div>
           </form>
           <hr>
-          <!-- / 搜索栏 -->
-
           <!-- 列表 -->
           <table id="table" class="table table-bordered">
           </table>
-
         </div>
-        <!-- /.card -->
+      <!-- /.card -->
       </div>
     </section>
     <!-- / 右侧内容区域 -->
@@ -93,6 +85,7 @@
   <!-- 右上角工具栏 Control Sidebar -->
   <th:block th:replace="fragments/control-sidebar"/>
 
+  <!-- /.control-sidebar -->
 </div>
 <!-- ./wrapper -->
 
