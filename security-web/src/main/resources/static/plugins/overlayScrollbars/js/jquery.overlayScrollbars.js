@@ -464,9 +464,9 @@
                     _template : convert(true),
 
                     /**
-                     * Validates the passed object by the passed templates.
+                     * Validates the passed object by the passed template.
                      * @param obj The object which shall be validated.
-                     * @param template The templates which defines the allowed values and types.
+                     * @param template The template which defines the allowed values and types.
                      * @param writeErrors True if errors shall be logged to the console.
                      * @param diffObj If a object is passed then only valid differences to this object will be returned.
                      * @returns {{}} A object which contains two objects called "default" and "prepared" which contains only the valid properties of the passed original object and discards not different values compared to the passed diffObj.
@@ -504,7 +504,7 @@
 
                                     dataDiffValue = dataDiffValue === undefined ? { } : dataDiffValue;
                                     
-                                    //if the templates has a object as value, it means that the options are complex (verschachtelt)
+                                    //if the template has a object as value, it means that the options are complex (verschachtelt)
                                     if(templateIsComplex && dataValueType == TYPES.o) {
                                         validatedOptions[prop] = { };
                                         validatedOptionsPrepared[prop] = { };
@@ -573,7 +573,7 @@
                         };
                         checkObjectProps(objectCopy, template, diffObj || { }, validatedOptions, validatedOptionsPrepared);
 
-                        //add values which aren't specified in the templates to the finished validated object to prevent them from being discarded
+                        //add values which aren't specified in the template to the finished validated object to prevent them from being discarded
                         /*
                         if(keepForeignProps) {
                             FRAMEWORK.extend(true, validatedOptions, objectCopy);

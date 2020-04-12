@@ -7,7 +7,7 @@
              alt="梦学谷"
              class="brand-image img-circle elevation-3"
              style="opacity: .8">
-        <span class="brand-text font-weight-light">统一权限管理</span>
+        <span class="brand-text font-weight-light">梦学谷统一权限管理</span>
     </a>
     <!--  Sidebar -->
     <div class="sidebar">
@@ -16,9 +16,10 @@
             <div class="image">
                 <img th:src="@{/dist/img/user2-160x160.jpg}" src="../dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
-            <!--<div class="info">
-                &lt;!&ndash;<a th:text="${username}" href="#" class="d-block">梦老师</a>&ndash;&gt;
-            </div>-->
+            <div class="info">
+            <!--<a th:text="${#authentication.principal.username}" href="#" class="d-block">梦老师</a>-->
+            <a sec:authentication="principal.username" href="#" class="d-block">梦老师</a>
+        </div>
         </div>
 
         <!-- 菜单列表 Sidebar Menu -->
@@ -27,7 +28,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a th:href="@{/}" href="index.html" class="nav-link active">
+                    <a th:href="@{/}" th:class="${#strings.equals(activeUrl, '/') ? 'nav-link active': 'nav-link'}" href="index.html" class="nav-link active">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             首页
@@ -36,8 +37,14 @@
                     </a>
                 </li>
 
-                <li class="nav-item has-treeview">
-                    <a href="#" class="nav-link ">
+                <li class="nav-item has-treeview menu-open"
+                    th:class="${#lists.contains('/user,/role,/permission', activeUrl)}
+                    ? 'nav-item has-treeview menu-open' : 'nav-item has-treeview'"
+                >
+                    <a href="#" class="nav-link active"
+                       th:class="${#lists.contains('/user,/role,/permission', activeUrl)}
+                       ? 'nav-link active': 'nav-link' "
+                    >
                         <i class="nav-icon fa fa-cogs"></i>
                         <p>
                             系统管理
@@ -46,19 +53,27 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a th:href="@{/user}" href="system/user/user-list.html" class="nav-link ">
+                            <a th:href="@{/user}" href="system/user/user-list.html"
+                               class="nav-link active"
+                               th:class="${#strings.equals(activeUrl, '/user') ? 'nav-link active': 'nav-link'}"
+                            >
                                 <i class="fa fa-users"></i>
                                 <p>用户管理</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a th:href="@{/role}"
+                               href="#" class="nav-link"
+                               th:class="${#strings.equals(activeUrl, '/role') ? 'nav-link active': 'nav-link'}"
+                            >
                                 <i class="fa fa-user-secret"></i>
                                 <p>角色管理</p>
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="#" class="nav-link">
+                            <a th:href="@{/permission}" href="#" class="nav-link"
+                               th:class="${#strings.equals(activeUrl, '/permission') ? 'nav-link active': 'nav-link'}"
+                            >
                                 <i class="fa fa-cog"></i>
                                 <p>菜单管理</p>
                             </a>

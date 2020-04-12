@@ -50,6 +50,8 @@
           </div>
         </div>
 
+
+
         <div class="row mb-2 ">
           <div class="col-6">
               <input name="code" type="text" class="form-control" placeholder="验证码">
@@ -58,18 +60,18 @@
             <img onclick="this.src='/code/image?'+Math.random()" src="/code/image" alt="验证码"   />
           </div>
         </div>
-
+        <!-- 提示信息, 表达式红线没关系，忽略它 -->
         <div th:if="${param.error}">
-            <span th:text="${session.SPRING_SECURITY_LAST_EXCEPTION?.message}" style="color:red">用户名或密码错误</span>
+          <span th:text="${session.SPRING_SECURITY_LAST_EXCEPTION?.message}" style="color:red">用户名或密码错误</span>
         </div>
 
         <div class="row">
           <div class="col-8">
-            <div class="icheck-primary">
-              <input name="remember-me" type="checkbox" id="remember">
-              <label for="remember">
-                记住我
-              </label>
+              <div class="icheck-primary">
+                <input name="remember-me" type="checkbox" id="remember">
+                <label for="remember">
+                  记住我
+                </label>
             </div>
           </div>
           <!-- /.col -->
