@@ -51,6 +51,34 @@
         </dependency>
         -->
 
+        <!-- bootstrap-table -->
+        <dependency>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>bootstrap-table</artifactId>
+            <version>1.14.1</version>
+        </dependency>
+
+        <!-- jquery-treeGrid -->
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>jquery-treegrid</artifactId>
+            <version>0.3.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>jquery</artifactId>
+                    <groupId>org.webjars.bower</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- layer -->
+        <dependency>
+            <groupId>org.webjars.bowergithub.sentsin</groupId>
+            <artifactId>layer</artifactId>
+            <version>3.1.1</version>
+        </dependency>
+
+
         <!-- application.yml 配置处理器-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
