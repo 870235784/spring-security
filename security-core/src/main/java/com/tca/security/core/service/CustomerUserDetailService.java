@@ -39,7 +39,7 @@ public class CustomerUserDetailService implements UserDetailsService{
         String encodePassword = passwordEncoder.encode(securityProperties.getAuthentication().getPassword());
 
         // 3.返回
-        return new User(username, encodePassword, AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
+        return new User(username, encodePassword, AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN, sys:role"));
     }
 
 }

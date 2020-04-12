@@ -1,5 +1,6 @@
 package com.tca.security.core.config;
 
+import com.tca.security.core.authorize.AuthorizeConfigurerManager;
 import com.tca.security.core.imageCode.ImageCodeValidateFilter;
 import com.tca.security.core.mobile.MobileAuthenticationConfig;
 import com.tca.security.core.mobile.MobileCodeValidateFilter;
@@ -69,6 +70,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
     private CustomerLogoutHandler customerLogoutHandler;
 
     @Autowired
+    private AuthorizeConfigurerManager authorizeConfigurerManager;
+
+    @Autowired
     private DataSource dataSource;
 
     /**
@@ -131,8 +135,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http.httpBasic() // httpbasic方式认证
         http
+            // 认证配置
             .addFilterBefore(mobileCodeValidateFilter, UsernamePasswordAuthenticationFilter.class) // 手机验证码过滤器
             .addFilterBefore(imageCodeValidateFilter, UsernamePasswordAuthenticationFilter.class) // 图形验证码过滤器
             .formLogin()  // http表单登录
@@ -142,15 +146,25 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .passwordParameter(securityProperties.getAuthentication().getPasswordParameter()) // 密码-请求参数
             .successHandler(customerAuthenticationSuccessHandler) // 认证成功处理器
             .failureHandler(customerAuthenticationFailureHandler) // 认证失败处理器
-            .and()
-            .authorizeRequests() // 认证请求
-            .antMatchers(securityProperties.getAuthentication().getIgnoreUrls()).permitAll() // 拦截放行 url
+
+            // 鉴权配置
+            /*.and()
+            .authorizeRequests() // 授权请求
+            .antMatchers(securityProperties.getAuthentication().getIgnoreUrls()).permitAll() // permitAll: 满足当前url条件放行
+            .antMatchers("/user").hasAuthority("sys:user") // hasAuthority: 拥有sys:user权限的用户, 可以访问任意请求方式的/user
+            .antMatchers(HttpMethod.GET, "/role").hasAnyAuthority("sys:role") // 拥有sys:role权限的用户, 可以访问GET请求方式的/user
+            // 表示拥有 sys:permission 权限的用户 或者 拥有 ROLE_ADMIN 角色的用户 可以访问GET请求方式的 /permission (注意:角色会加上前缀 ROLE_，即真实是 ROLE_ADMIN)
+            .antMatchers(HttpMethod.GET, "/permission").access("hasAuthority('sys:permission') or hasAnyRole('ADMIN')")
             .anyRequest() // 所有通过http访问的请求都需要认证
-            .authenticated()
+            .authenticated()*/
+
+            // remember-me配置
             .and()
             .rememberMe() // 记住我
             .tokenRepository(jdbcTokenRepository())
             .tokenValiditySeconds(60 * 60 * 24 * 7)
+
+            // session配置
             .and()
             .sessionManagement()
             .invalidSessionStrategy(invalidSessionStrategy) // session失效策略
@@ -158,9 +172,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter{
             .expiredSessionStrategy(sessionInformationExpiredStrategy)
 //            .maxSessionsPreventsLogin(true) // 一般不推荐打开,达到session最大数时阻止新增新的session
             .sessionRegistry(sessionRegistry())
+
+            // 登出配置
             .and().and().logout()
             .addLogoutHandler(customerLogoutHandler)
         ;
+        // 鉴权配置
+        authorizeConfigurerManager.configure(http.authorizeRequests());
         http.csrf().disable(); // 关闭csrf攻击防护
         http.apply(mobileAuthenticationConfig);
     }

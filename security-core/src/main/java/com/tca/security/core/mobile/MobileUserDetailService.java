@@ -32,7 +32,7 @@ public class MobileUserDetailService implements UserDetailsService{
         String username = getUserByMobile(mobile);
         if (ValidateUtils.isNotEmpty(username)) {
             return new User(username, "", true, true, true, true,
-                    AuthorityUtils.commaSeparatedStringToAuthorityList("ADMIN"));
+                    AuthorityUtils.commaSeparatedStringToAuthorityList("ROLE_ADMIN, sys:role"));
         }
 
         return null;
