@@ -6,6 +6,10 @@ server:
       cookie:
         name: JSESSIONID
 
+logging:
+  level:
+    com.tca.security.web.mapper: debug
+
 # 模板页面缓存
 spring:
   thymeleaf:
@@ -17,6 +21,13 @@ spring:
     url: jdbc:mysql://127.0.0.1:3306/spring-security?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
     #mysql8版本以上驱动包指定新的驱动类
     driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    initialSize: 8
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
   session:
     store-type: redis
   redis:
@@ -44,3 +55,5 @@ tca:
         - /mobile/page
         - /code/mobile
         - /mobile/form
+
+
