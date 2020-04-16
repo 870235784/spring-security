@@ -1,4 +1,3 @@
-/*
 package com.tca.security.web.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
@@ -7,12 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-*/
-/**
- * @author zhoua
- * @Date 2020/4/15
- *//*
 
+/**
+ * @author zhouan
+ *
+ */
 @Configuration
 @EnableTransactionManagement
 @MapperScan("com.tca.security.web.mapper")
@@ -24,4 +22,3 @@ public class MybatisPlusConfig {
         return paginationInterceptor;
     }
 }
-*/

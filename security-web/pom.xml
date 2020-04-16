@@ -26,10 +26,10 @@
 
 
         <!-- mybatis-plus启动器 -->
-        <!--<dependency>
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
-        </dependency>-->
+        </dependency>
 
         <!-- druid连接池 -->
         <dependency>

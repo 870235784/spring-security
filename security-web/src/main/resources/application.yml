@@ -14,6 +14,8 @@ logging:
 spring:
   thymeleaf:
     cache: false
+#  aop:
+#    proxy-target-class: false
   # 数据源配置
   datasource:
     username: root
@@ -33,6 +35,7 @@ spring:
   redis:
     host: localhost
     port: 6379
+
 
 tca:
   security:
@@ -55,5 +58,7 @@ tca:
         - /mobile/page
         - /code/mobile
         - /mobile/form
+mybatis-plus:
+  type-aliases-package: com.tca.security.web.entity
 
 
