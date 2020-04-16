@@ -1,13 +1,9 @@
 package com.tca.security.core.mobile;
 
-import com.tca.security.core.properties.SecurityProperties;
-import com.tca.utils.ValidateUtils;
+import com.tca.security.core.auth.entity.SysUser;
+import com.tca.security.core.auth.service.ISysUserService;
+import com.tca.security.core.service.AbstractUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,47 +11,13 @@ import org.springframework.stereotype.Service;
  * @Date 2020/3/25
  */
 @Service("mobileUserDetailService")
-public class MobileUserDetailService implements UserDetailsService{
+public class MobileUserDetailService extends AbstractUserDetailService {
 
     @Autowired
-    private SecurityProperties securityProperties;
+    private ISysUserService sysUserService;
 
-    /**
-     * 动态验证用户名
-     * @param mobile
-     * @return
-     * @throws UsernameNotFoundException
-     */
     @Override
-    public UserDetails loadUserByUsername(String mobile) throws UsernameNotFoundException {
-        // 验证手机号是否存在
-        String username = getUserByMobile(mobile);
-        if (ValidateUtils.isNotEmpty(username)) {
-            return new User(username, "", true, true, true, true,
-                AuthorityUtils.commaSeparatedStringToAuthorityList(
-                    "ROLE_ADMIN, sys:role, sys:user, sys:permission, sys:user:add, sys:user:edit"));
-        }
-
-        return null;
+    public SysUser getUserByPrincipal(String principal) {
+        return sysUserService.getUserByMobile(principal);
     }
-
-   /* *//**
-     * 校验手机号是否存在
-     * @param mobile
-     * @return
-     *//*
-    private boolean mobileExist(String mobile) {
-        return true;
-    }*/
-
-    /**
-     * 根据手机号获取用户名
-     * @param mobile
-     * @return
-     */
-    private String getUserByMobile(String mobile) {
-        return securityProperties.getAuthentication().getUsername();
-    }
-
-
 }

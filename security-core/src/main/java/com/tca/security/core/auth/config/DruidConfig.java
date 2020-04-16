@@ -1,4 +1,4 @@
-package com.tca.security.web.config;
+package com.tca.security.core.auth.config;
 
 import com.alibaba.druid.pool.DruidDataSource;
 import org.springframework.boot.context.properties.ConfigurationProperties;

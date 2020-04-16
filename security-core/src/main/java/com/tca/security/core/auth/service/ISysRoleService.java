@@ -1,8 +1,8 @@
-package com.tca.security.web.service;
+package com.tca.security.core.auth.service;
 
 
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.tca.security.web.entity.SysRole;
+import com.tca.security.core.auth.entity.SysRole;
 
 /**
  * <p>

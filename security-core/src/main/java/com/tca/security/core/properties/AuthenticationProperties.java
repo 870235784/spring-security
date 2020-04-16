@@ -40,16 +40,6 @@ public class AuthenticationProperties {
     private String[] staticPaths = {"/dist/**", "/modules/**", "/plugins/**"};
 
     /**
-     * 默认用户名
-     */
-    private String username = "admin";
-
-    /**
-     * 默认密码
-     */
-    private String password = "123456";
-
-    /**
      * 默认登录响应方式
      */
     private String loginResponseType = LoginResponseType.JSON.name();

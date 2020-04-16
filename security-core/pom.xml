@@ -55,6 +55,17 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!-- mybatis-plus启动器 -->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+        </dependency>
+
+        <!-- druid连接池 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+        </dependency>
 
         <!-- 采用redis来管理session -->
         <dependency>

@@ -1,8 +1,8 @@
-package com.tca.security.web.mapper;
+package com.tca.security.core.auth.mapper;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.tca.security.web.entity.SysRole;
+import com.tca.security.core.auth.entity.SysRole;
 
 /**
  * <p>

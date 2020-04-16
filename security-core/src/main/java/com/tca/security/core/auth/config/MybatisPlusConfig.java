@@ -1,4 +1,4 @@
-package com.tca.security.web.config;
+package com.tca.security.core.auth.config;
 
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
 import org.mybatis.spring.annotation.MapperScan;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @Configuration
 @EnableTransactionManagement
-@MapperScan("com.tca.security.web.mapper")
+@MapperScan("com.tca.security.core.auth.mapper")
 public class MybatisPlusConfig {
 
     @Bean

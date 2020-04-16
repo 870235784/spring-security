@@ -1,7 +1,7 @@
 package com.tca.security.web.test;
 
-import com.tca.security.web.entity.SysUser;
-import com.tca.security.web.service.ISysUserService;
+import com.tca.security.core.auth.entity.SysUser;
+import com.tca.security.core.auth.service.ISysUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;

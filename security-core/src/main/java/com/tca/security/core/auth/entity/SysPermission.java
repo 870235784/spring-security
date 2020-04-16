@@ -1,4 +1,4 @@
-package com.tca.security.web.entity;
+package com.tca.security.core.auth.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;

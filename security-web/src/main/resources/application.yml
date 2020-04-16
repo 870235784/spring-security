@@ -8,7 +8,7 @@ server:
 
 logging:
   level:
-    com.tca.security.web.mapper: debug
+    com.tca.security.core.auth.mapper: debug
 
 # 模板页面缓存
 spring:
@@ -48,8 +48,6 @@ tca:
         - /dist/**
         - /modules/**
         - /plugins/**
-      username: admin
-      password: 123456
 #      loginResponseType: JSON
       loginResponseType: REDIRECT
       ignoreUrls:
@@ -58,7 +56,8 @@ tca:
         - /mobile/page
         - /code/mobile
         - /mobile/form
+
 mybatis-plus:
-  type-aliases-package: com.tca.security.web.entity
+  type-aliases-package: com.tca.security.core.auth.entity
 
 
