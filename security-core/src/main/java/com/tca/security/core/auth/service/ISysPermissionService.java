@@ -23,4 +23,11 @@ public interface ISysPermissionService extends IService<SysPermission> {
      * @return
      */
     List<SysPermission> getPermissionByUserId(Long userId);
+
+    /**
+     * 根据id递归删除
+     * @param id
+     * @return
+     */
+    boolean delete(Long id);
 }

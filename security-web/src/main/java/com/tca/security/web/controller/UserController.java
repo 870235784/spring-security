@@ -21,6 +21,7 @@ public class UserController {
      * 跳转到用户管理页面 user-list.html
      * @return
      */
+    @PreAuthorize("hasAnyAuthority('sys:user')")
     @GetMapping({"/", ""})
     public String user() {
         return PREFIX_PATH + "user-list";
@@ -30,8 +31,8 @@ public class UserController {
      * 跳转到 user-form.html 新增/编辑用户
      * @return
      */
-    @PreAuthorize("hasAnyAuthority('sys:user:add', 'sys:user:edit')")
-    @GetMapping("form")
+    @PreAuthorize("hasAnyAuthority('sys:user:add', 'sys:user:edit', 'sys:user:list', 'sys:user:delete')")
+    @GetMapping("/form")
     public String form() {
         return PREFIX_PATH + "user-form";
     }

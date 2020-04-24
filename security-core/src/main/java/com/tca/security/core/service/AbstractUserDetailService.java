@@ -58,6 +58,7 @@ abstract public class AbstractUserDetailService implements UserDetailsService {
             sysPermissionList.forEach(sysPermission -> {
                 authorityList.add(new SimpleGrantedAuthority(sysPermission.getCode()));
             });
+            sysUser.setAuthorities(authorityList);
         }
     }
 }
