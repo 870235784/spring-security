@@ -22,8 +22,8 @@ $(function() {
                 columns: options.columns,
                 onLoadSuccess: function (res) {// 成功加载远程数据时触发
                     console.log('res', res);
-                    // 1. 加载数据到列表中 rows接收渲染数据 res.data.records , total接收总记录数来自动计算页码
-                    $table.bootstrapTable("load", {rows: res.data.records, total: res.data.total});
+                    // 1. 加载数据到列表中 rows接收渲染数据 res.rows , total接收总记录数来自动计算页码
+                    $table.bootstrapTable("load", {rows: res.rows, total: res.total});
 
                     // 2. `操作`权限判断, 删改只要有一个就显示, 自已在html上定义此方法实现
                     showOperation();

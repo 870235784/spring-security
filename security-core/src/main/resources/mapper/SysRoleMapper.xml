@@ -11,4 +11,15 @@
         <result column="update_date" property="updateDate" />
     </resultMap>
 
+    <insert id="insertBatchRolePermissionRel">
+        insert into sys_role_permission  (role_id, permission_id) values
+        <foreach collection="perIds" index="index" item="item" separator=",">
+            (#{roleId}, #{item})
+        </foreach>
+    </insert>
+
+    <delete id="deleteRolePermissionRelByRoleId">
+        delete from sys_role_permission where role_id = #{roleId}
+    </delete>
+
 </mapper>

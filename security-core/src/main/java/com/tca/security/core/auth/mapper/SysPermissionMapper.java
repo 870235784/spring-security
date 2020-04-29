@@ -22,4 +22,11 @@ public interface SysPermissionMapper extends BaseMapper<SysPermission> {
      * @return
      */
     List<SysPermission> getPermissionByUserId(@Param("userId") Long userId);
+
+    /**
+     * 根据角色id获取对应权限
+     * @param roleId
+     * @return
+     */
+    List<SysPermission> getPermissionByRoleId(@Param("roleId") Long roleId);
 }

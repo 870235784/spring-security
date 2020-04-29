@@ -87,14 +87,14 @@ public class PermissionController {
      * @return
      */
     @PreAuthorize("hasAnyAuthority('sys:permission:edit', 'sys:permission:add')")
-    @RequestMapping(value="", method = {RequestMethod.PUT, RequestMethod.POST}) // /permission
+    @RequestMapping(value="/", method = {RequestMethod.PUT, RequestMethod.POST}) // /permission
     public String saveOrUpdate(SysPermission permission) {
         sysPermissionService.saveOrUpdate(permission);
         return "redirect:/permission";
     }
 
     /**
-     * 删除数据
+     * 删除permission
      * @param id
      * @return
      */

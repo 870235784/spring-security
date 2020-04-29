@@ -25,4 +25,12 @@
         WHERE u.id = #{userId}
     </select>
 
+    <select id="getPermissionByRoleId" parameterType="long" resultMap="BaseResultMap">
+        select DISTINCT p.*
+        FROM sys_role r
+	      INNER JOIN sys_role_permission rp ON r.id = rp.role_id
+	      INNER JOIN sys_permission p ON rp.permission_id = p.id
+        WHERE r.id = #{roleId}
+    </select>
+
 </mapper>
