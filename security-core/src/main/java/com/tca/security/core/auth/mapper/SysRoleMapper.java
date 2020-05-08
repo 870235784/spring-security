@@ -30,4 +30,23 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
      */
     void deleteRolePermissionRelByRoleId(@Param("roleId") Long roleId);
 
+    /**
+     * 根据userId获取角色
+     * @param userId
+     * @return
+     */
+    List<SysRole> getRoleByUserId(@Param("userId")Long userId);
+
+    /**
+     * 批量插入user-role关联关系
+     * @param userId
+     * @param roleIds
+     */
+    void insertBatchUserRoleRel(@Param("userId") Long userId, @Param("roleIds") List<Long> roleIds);
+
+    /**
+     * 根据userId删除user-role关联关系
+     * @param userId
+     */
+    void deleteUserRoleRelByUserId(@Param("userId") Long userId);
 }
