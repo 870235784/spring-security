@@ -24,63 +24,49 @@
 
         <!-- 菜单列表 Sidebar Menu -->
         <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <ul th:include="this::row(${#authentication.principal.permissions})" class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
-                <li class="nav-item">
-                    <a th:href="@{/}" th:class="${#strings.equals(activeUrl, '/') ? 'nav-link active': 'nav-link'}" href="index.html" class="nav-link active">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            首页
-                            <!-- <span class="right badge badge-danger">New</span> -->
-                        </p>
-                    </a>
-                </li>
+                <!--声明一个代码片段, 后面需要使用递归-->
+                <th:block th:fragment="row(permissions)">
+                    <!--将当前菜单集合进行循环-->
+                    <th:block th:each="p: ${permissions}">
 
-                <li class="nav-item has-treeview menu-open"
-                    th:class="${#lists.contains('/user,/role,/permission', activeUrl)}
-                    ? 'nav-item has-treeview menu-open' : 'nav-item has-treeview'"
-                >
-                    <a href="#" class="nav-link active"
-                       th:class="${#lists.contains('/user,/role,/permission', activeUrl)}
-                       ? 'nav-link active': 'nav-link' "
-                    >
-                        <i class="nav-icon fa fa-cogs"></i>
-                        <p>
-                            系统管理
-                            <i class="right fas fa-angle-left"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a th:href="@{/user}" href="system/user/user-list.html"
-                               class="nav-link active"
-                               th:class="${#strings.equals(activeUrl, '/user') ? 'nav-link active': 'nav-link'}"
-                            >
-                                <i class="fa fa-users"></i>
-                                <p>用户管理</p>
+                        <!--没有子菜单-->
+                        <li th:if="${#lists.size(p.children)==0}" class="nav-item">
+                            <a th:href="@{${p.url}}" th:class="${#strings.equals(activeUrl, p.url) ? 'nav-link active': 'nav-link'}" href="index.html" class="nav-link active">
+                                <i th:class="${p.icon}" class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    [[${p.name}]]
+                                </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a th:href="@{/role}"
-                               href="#" class="nav-link"
-                               th:class="${#strings.equals(activeUrl, '/role') ? 'nav-link active': 'nav-link'}"
+                        <!--有子菜单-->
+                        <li th:unless="${#lists.size(p.children)==0}" class="nav-item has-treeview menu-open"
+                            th:class="${#lists.contains(p.childrenUrl, activeUrl)}
+                        ? 'nav-item has-treeview menu-open' : 'nav-item has-treeview'"
+                        >
+                            <a href="#" class="nav-link active"
+                               th:class="${#lists.contains(p.childrenUrl, activeUrl)}
+                           ? 'nav-link active': 'nav-link' "
                             >
-                                <i class="fa fa-user-secret"></i>
-                                <p>角色管理</p>
+                                <i th:class="${p.icon}" class="nav-icon fa fa-cogs"></i>
+                                <p>
+                                    [[${p.name}]]
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a th:href="@{/permission}" href="#" class="nav-link"
-                               th:class="${#strings.equals(activeUrl, '/permission') ? 'nav-link active': 'nav-link'}"
-                            >
-                                <i class="fa fa-cog"></i>
-                                <p>菜单管理</p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
 
+                            <!--子菜单 -->
+                            <ul class="nav nav-treeview">
+                                <!--递归获取子菜单-->
+                                <li th:include="this::row(${p.children})"></li>
+                            </ul>
+                        </li>
+
+                    </th:block>
+
+                </th:block>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
